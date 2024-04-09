@@ -1,17 +1,14 @@
 <?php
 
+use App\Http\Controllers\ExpenseController;
+use App\Models\Entity;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::resource("/gastos", ExpenseController::class);
+Route::resource("/bancos", Entity::class);
+Route::redirect("/", "/gastos");
 
 Route::middleware([
     'auth:sanctum',
