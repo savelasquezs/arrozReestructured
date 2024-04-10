@@ -2,11 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\Address;
+use App\Models\Customer;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseItem;
+use App\Models\Neighborhood;
+use App\Models\Phone;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,5 +34,10 @@ class DatabaseSeeder extends Seeder
         Entity::factory(20)->create();
         ExpenseItem::factory(5)->create();
         Expense::factory(50)->create();
+
+        Customer::factory(10)->create();
+        Neighborhood::factory(20)->create();
+        Phone::factory(25)->create();
+        Address::factory(50)->create();
     }
 }

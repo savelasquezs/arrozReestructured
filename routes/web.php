@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExpenseController;
-use App\Models\Entity;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::resource("/gastos", ExpenseController::class);
-Route::resource("/bancos", Entity::class);
+Route::resource("/bancos", EntityController::class);
+Route::resource("/clientes", CustomerController::class);
+
 Route::redirect("/", "/gastos");
 
 Route::middleware([
