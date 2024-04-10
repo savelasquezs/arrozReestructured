@@ -4,12 +4,17 @@ namespace Database\Seeders;
 
 use App\Models\Address;
 use App\Models\Customer;
+use App\Models\DeliveryMethod;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseItem;
 use App\Models\Neighborhood;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderStatus;
+use App\Models\PaymentItem;
 use App\Models\Phone;
 use App\Models\ProductCategory;
 use App\Models\ProductSize;
@@ -61,5 +66,15 @@ class DatabaseSeeder extends Seeder
                 ["name" => "Sprite", "price" => rand(1, 100) * 1000,],
             ]);
         }
+        DeliveryMethod::create(["name" => "ToTake"]);
+        DeliveryMethod::create(["name" => "Delivery"]);
+        OrderStatus::create(["name" => "InKitchen"]);
+        OrderStatus::create(["name" => "InTable"]);
+        OrderStatus::create(["name" => "InRoute"]);
+        OrderStatus::create(["name" => "Done"]);
+        Order::factory(50)->create();
+        PaymentItem::factory(80)->create();
+        OrderItem::factory(200)->create();
+
     }
 }

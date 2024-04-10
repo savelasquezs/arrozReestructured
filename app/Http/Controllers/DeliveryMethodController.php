@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Models\DeliveryMethod;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class DeliveryMethodController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $products = Product::with("product_size", "product_size.product_category")->orderBy('name', 'desc')->get();
-        $products = ProductResource::collection($products);
-        return inertia("Products/Index", ["products" => $products]);
+        //
     }
 
     /**
@@ -37,7 +34,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(DeliveryMethod $deliveryMethod)
     {
         //
     }
@@ -45,7 +42,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(DeliveryMethod $deliveryMethod)
     {
         //
     }
@@ -53,7 +50,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, DeliveryMethod $deliveryMethod)
     {
         //
     }
@@ -61,7 +58,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(DeliveryMethod $deliveryMethod)
     {
         //
     }

@@ -2,20 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $products = Product::with("product_size", "product_size.product_category")->orderBy('name', 'desc')->get();
-        $products = ProductResource::collection($products);
-        return inertia("Products/Index", ["products" => $products]);
+        $orders = Order::with(
+            "customer",
+            "customer.addresses",
+            "customer.phones",
+            "delivery_person",
+            "delivery_method",
+            "order_items",
+            "order_items.product",
+            "payment_items",
+            "payment_items.bank",
+            "order_items.product.product_size"
+
+
+        )->get();
+        return inertia("Orders/Index", compact('orders'));
     }
 
     /**
@@ -37,7 +48,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Order $order)
     {
         //
     }
@@ -45,7 +56,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Order $order)
     {
         //
     }
@@ -53,7 +64,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Order $order)
     {
         //
     }
@@ -61,7 +72,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Order $order)
     {
         //
     }
