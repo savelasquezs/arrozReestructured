@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductCategory>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductSize>
  */
-class ProductCategoryFactory extends Factory
+class ProductSizeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +18,7 @@ class ProductCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => fake()->name(),
+            "name" => fake()->word(),
         ];
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExpenseController;
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -11,6 +12,7 @@ use Inertia\Inertia;
 Route::resource("/gastos", ExpenseController::class);
 Route::resource("/bancos", EntityController::class);
 Route::resource("/clientes", CustomerController::class);
+Route::resource("/productos", ProductController::class);
 
 Route::redirect("/", "/gastos");
 
