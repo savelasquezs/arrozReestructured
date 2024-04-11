@@ -26,9 +26,6 @@
                                             PRODUCT NAME
                                         </th>
                                         <th class="pb-3 text-end min-w-[100px]">
-                                            SIZE
-                                        </th>
-                                        <th class="pb-3 text-end min-w-[100px]">
                                             PRICE
                                         </th>
                                         <th
@@ -48,7 +45,9 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        v-for="(product, index) in products"
+                                        v-for="(
+                                            product, index
+                                        ) in products.data"
                                         :key="index"
                                         class="border-b border-dashed last:border-b-0"
                                     >
@@ -66,14 +65,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="p-3 pr-0 text-end">
-                                            <span
-                                                class="font-semibold text-light-inverse text-md/normal"
-                                                >{{
-                                                    product.product_size.name
-                                                }}</span
-                                            >
-                                        </td>
+
                                         <td class="p-3 pr-0 text-end">
                                             <span
                                                 class="text-center align-baseline inline-flex px-2 py-1 mr-auto items-center font-semibold text-base/none text-success bg-success-light rounded-lg"
@@ -99,10 +91,7 @@
                                             <span
                                                 class="text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none text-primary bg-primary-light rounded-lg"
                                             >
-                                                {{
-                                                    product.product_size
-                                                        .product_category.name
-                                                }}
+                                                {{ product.category }}
                                             </span>
                                         </td>
                                         <td class="pr-0 text-start">
@@ -147,7 +136,7 @@
 </template>
 
 <script setup>
-const props = defineProps({ products: Array });
+const props = defineProps({ products: Object });
 
 console.log(props.products);
 </script>

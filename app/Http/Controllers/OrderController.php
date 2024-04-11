@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,9 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with(
+        $orders = Order::orderBy("id", "DESC")->with(
             "customer",
             "customer.addresses",
             "customer.phones",
@@ -22,10 +23,16 @@ class OrderController extends Controller
             "order_items.product",
             "payment_items",
             "payment_items.bank",
-            "order_items.product.product_size"
+            "order_items.product.product_size",
+            "order_status",
+            "delivery_method"
 
 
-        )->get();
+        )
+
+
+            ->get();
+        $orders = OrderResource::collection($orders);
         return inertia("Orders/Index", compact('orders'));
     }
 
