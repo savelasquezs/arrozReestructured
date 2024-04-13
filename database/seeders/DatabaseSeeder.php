@@ -46,6 +46,8 @@ class DatabaseSeeder extends Seeder
         Neighborhood::factory(20)->create();
         Phone::factory(25)->create();
         Address::factory(50)->create();
+        Customer::factory()->create(["name" => "Santiago Velásquez"]);
+        Address::factory()->create(["customer_id" => 11, "address" => "carrera 68 # 98-135"]);
 
         ProductCategory::factory()->hasSizes(5)->create(["name" => "arroces"]);
         ProductCategory::factory()->hasSizes(3)->create(["name" => "gaseosas"]);

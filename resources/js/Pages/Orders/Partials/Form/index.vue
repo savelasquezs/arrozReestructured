@@ -6,67 +6,30 @@
             <Dropdown
                 :options="delivery_methods"
                 title="Metodo de entrega"
-                @selectedId="setDeliveryMethod"
+                v-model="delivery_method_selected"
             />
 
             <!-- Customer -->
 
-            <div v-if="delivery_method_selected == '2'">
+            <div v-if="delivery_method_selected == 'Delivery'">
                 <div class="flex justify-start items-center">
-                    <SearchInput
-                        class="w-full relative"
-                        title="Busca cliente por tenefono, dirección o nombre "
-                    >
-                        <div
-                            v-if="customers"
-                            id="dropdown"
-                            class="z-10 divide-y divide-gray-100 rounded-lg shadow w-full bg-slate-900 absolute"
-                        >
-                            <ul
-                                class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownDefaultButton"
-                            >
-                                <li
-                                    v-if="customers"
-                                    v-for="customer in customers"
-                                    @click="selectOption(customer)"
-                                >
-                                    <p
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    >
-                                        {{ customer.name }} --
-                                        {{ customer.addresses[0].address }}--{{
-                                            customer.addresses[1]?.address ||
-                                            ""
-                                        }}--{{ customer.phones[1].number }}--{{
-                                            customer.phones[2]?.number || ""
-                                        }}
-                                    </p>
-                                </li>
-                                <li v-else @click="showCustomers = false">
-                                    <p
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    >
-                                        No tenemos opciones para mostrar
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                    </SearchInput>
+                    <SearchCustomersInput
+                        :customers="customers"
+                        @customerSelected="setCustomer"
+                    />
                 </div>
             </div>
-            <!-- <TextInput
+            <TextInput
                 v-model="customer.name"
                 type="text"
                 title="Holis, ingresa un texto"
             />
-
-            <TextInput
+            <Dropdown
+                v-if="customerSelected"
+                :options="customerSelected.addresses"
                 v-model="customer.address"
-                title="Holis, ingresa un numero"
-                type="number"
-            /> -->
-            {{ holis }}
+                title="Direcciónes del cliente"
+            />
         </div>
 
         <button
@@ -83,9 +46,10 @@ import { ref, inject, computed } from "vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
-import SearchInput from "@/Components/SearchInput.vue";
-
+import SearchCustomersInput from "./SearchCustomerInput.vue";
 defineProps({ customers: Array });
+
+const customerSelected = ref();
 
 const customer = useForm({
     name: null,
@@ -93,7 +57,11 @@ const customer = useForm({
     remember: false,
 });
 
-const holis = ref("");
+function setCustomer(cust) {
+    customerSelected.value = cust;
+    customer.address = null;
+}
+
 const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
 

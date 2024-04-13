@@ -1,12 +1,11 @@
 <template>
     <AppLayout>
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-max">
                 <div
                     class="text-white/60 bg-gray-700 overflow-hidden shadow-xl sm:rounded-lg"
                 >
                     <OrderForm :customers="customers"></OrderForm>
-                    {{ customers }}
                 </div>
             </div>
         </div>

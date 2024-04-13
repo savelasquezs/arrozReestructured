@@ -37,31 +37,18 @@
                 required
                 v-model="q"
             />
-            <button
-                type="submit"
-                class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
-            >
-                Search
-            </button>
         </div>
         <slot />
     </form>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { router } from "@inertiajs/vue3";
-defineProps({ title: String, class: String });
+import { ref } from "vue";
+import { useVModel } from "@vueuse/core";
 
-const q = ref();
-
-watch(q, () => {
-    router.get(
-        "/ventas/create",
-        { q: q.value },
-        { preserveState: true, preserveScroll: true }
-    );
-});
+const props = defineProps({ title: String, class: String, modelValue: String });
+const emit = defineEmits(["update:modelValue"]);
+const q = useVModel(props, "modelValue", emit);
 </script>
 
 <style lang="scss" scoped></style>

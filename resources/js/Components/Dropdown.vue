@@ -48,7 +48,7 @@
                     <p
                         class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
-                        {{ option.name }}
+                        {{ option.name || option.address }}
                     </p>
                 </li>
                 <li v-else @click="showDropDown = false">
@@ -64,18 +64,22 @@
 </template>
 
 <script setup>
+import { useVModel } from "@vueuse/core";
 import { ref } from "vue";
-const emit = defineEmits(["selectedId"]);
-defineProps({ options: Array, title: String });
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
+    options: Array,
+    title: String,
+    modelValue: String,
+});
 
 const showDropDown = ref(false);
-const selectedOption = ref("");
+const selectedOption = useVModel(props, "modelValue", emit);
 
 function selectOption(option) {
-    const { id, name } = option;
-    selectedOption.value = name;
+    const { name, address } = option;
+    selectedOption.value = name || address;
     showDropDown.value = false;
-    emit("selectedId", id);
 }
 </script>
 

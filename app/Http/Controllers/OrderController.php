@@ -54,15 +54,19 @@ class OrderController extends Controller
                 })
                 ->orWhereHas('addresses', function ($query) use ($q) {
                     $query->where('address', 'like', "%$q%");
-                })->with(
-
-                    "addresses",
-                    "phones",
-
-                )
+                })
+                ->orWhere(function ($query) use ($q) {
+                    $query->whereHas('phones', function ($query) use ($q) {
+                        $query->where('number', 'like', "%$q%");
+                    })
+                        ->whereHas('addresses', function ($query) use ($q) {
+                            $query->where('address', 'like', "%$q%");
+                        });
+                })
+                ->with("addresses", "phones")
                 ->get();
-            $toSend["customers"] = $customers;
 
+            $toSend["customers"] = $customers;
         }
         // dd($delivery_methods);
         return inertia("Orders/Create", $toSend);
