@@ -7,7 +7,7 @@
 <script setup>
 import DataTable from "@/Components/DataTable.vue";
 const props = defineProps({ orders: Object });
-console.log(props.orders);
+console.log(props.orders.data[0]);
 </script>
 
 <style lang="scss" scoped></style>

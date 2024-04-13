@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\OrderResource;
+use App\Models\DeliveryMethod;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -26,8 +27,6 @@ class OrderController extends Controller
             "order_items.product.product_size",
             "order_status",
             "delivery_method"
-
-
         )
 
 
@@ -41,7 +40,11 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+
+        $delivery_methods = DeliveryMethod::all();
+
+        // dd($delivery_methods);
+        return inertia("Orders/Create", ["delivery_methods" => $delivery_methods]);
     }
 
     /**

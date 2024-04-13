@@ -1,79 +1,82 @@
-<script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
-
-const props = defineProps({
-    align: {
-        type: String,
-        default: 'right',
-    },
-    width: {
-        type: String,
-        default: '48',
-    },
-    contentClasses: {
-        type: Array,
-        default: () => ['py-1', 'bg-white dark:bg-gray-700'],
-    },
-});
-
-let open = ref(false);
-
-const closeOnEscape = (e) => {
-    if (open.value && e.key === 'Escape') {
-        open.value = false;
-    }
-};
-
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
-
-const widthClass = computed(() => {
-    return {
-        '48': 'w-48',
-    }[props.width.toString()];
-});
-
-const alignmentClasses = computed(() => {
-    if (props.align === 'left') {
-        return 'ltr:origin-top-left rtl:origin-top-right start-0';
-    }
-
-    if (props.align === 'right') {
-        return 'ltr:origin-top-right rtl:origin-top-left end-0';
-    }
-
-    return 'origin-top';
-});
-</script>
-
 <template>
-    <div class="relative">
-        <div @click="open = ! open">
-            <slot name="trigger" />
-        </div>
-
-        <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" @click="open = false" />
-
-        <transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="transform opacity-0 scale-95"
-            enter-to-class="transform opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="transform opacity-100 scale-100"
-            leave-to-class="transform opacity-0 scale-95"
+    <div class="my-2">
+        <button
+            id="dropdownDefaultButton"
+            data-dropdown-toggle="dropdown"
+            class="relative text-white bg-slate-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-slate-900 dark:hover:bg-slate-800 dark:focus:ring-slate-800"
+            type="button"
+            @click="showDropDown = !showDropDown"
         >
-            <div
-                v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
-                :class="[widthClass, alignmentClasses]"
-                style="display: none;"
-                @click="open = false"
-            >
-                <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
-                    <slot name="content" />
+            <div class="grid">
+                <div class="text-xs block text-gray-400">{{ title }}</div>
+                <div>
+                    {{ selectedOption || "Selecciona una" }}
                 </div>
             </div>
-        </transition>
+            <svg
+                class="w-2.5 h-2.5 ms-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                />
+            </svg>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div
+            v-if="showDropDown"
+            id="dropdown"
+            class="z-10 divide-y divide-gray-100 rounded-lg shadow w-44 bg-slate-900 absolute"
+        >
+            <ul
+                class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownDefaultButton"
+            >
+                <li
+                    v-if="options"
+                    v-for="option in options"
+                    @click="selectOption(option)"
+                >
+                    <p
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                        {{ option.name }}
+                    </p>
+                </li>
+                <li v-else @click="showDropDown = false">
+                    <p
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                        No tenemos opciones para mostrar
+                    </p>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+const emit = defineEmits(["selectedId"]);
+defineProps({ options: Array, title: String });
+
+const showDropDown = ref(false);
+const selectedOption = ref("");
+
+function selectOption(option) {
+    const { id, name } = option;
+    selectedOption.value = name;
+    showDropDown.value = false;
+    emit("selectedId", id);
+}
+</script>
+
+<style lang="scss" scoped></style>
