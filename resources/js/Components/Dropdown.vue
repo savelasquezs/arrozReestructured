@@ -1,5 +1,5 @@
 <template>
-    <div class="my-2">
+    <div class="my-2 min-w-md">
         <button
             id="dropdownDefaultButton"
             data-dropdown-toggle="dropdown"

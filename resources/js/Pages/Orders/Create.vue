@@ -5,7 +5,8 @@
                 <div
                     class="text-white/60 bg-gray-700 overflow-hidden shadow-xl sm:rounded-lg"
                 >
-                    <OrderForm></OrderForm>
+                    <OrderForm :customers="customers"></OrderForm>
+                    {{ customers }}
                 </div>
             </div>
         </div>
@@ -15,14 +16,15 @@
 <script setup>
 import OrderForm from "./Partials/Form/index.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { watch } from "vue";
 import { provide } from "vue";
 const props = defineProps({
     delivery_methods: Array,
     customer: Object,
+    customers: Array,
 });
 
 provide("delivery_methods", props.delivery_methods);
-provide("customer", props.customer);
 </script>
 
 <style lang="scss" scoped></style>

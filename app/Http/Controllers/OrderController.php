@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\OrderResource;
+use App\Models\Customer;
 use App\Models\DeliveryMethod;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -35,16 +36,36 @@ class OrderController extends Controller
         return inertia("Orders/Index", compact('orders'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
 
         $delivery_methods = DeliveryMethod::all();
+        $toSend = ["delivery_methods" => $delivery_methods];
 
+        $q = $request->q;
+        if ($q) {
+            $customers = Customer::where('name', 'like', "%$q%")
+                ->orWhereHas('phones', function ($query) use ($q) {
+                    $query->where('number', 'like', "%$q%");
+                })
+                ->orWhereHas('addresses', function ($query) use ($q) {
+                    $query->where('address', 'like', "%$q%");
+                })->with(
+
+                    "addresses",
+                    "phones",
+
+                )
+                ->get();
+            $toSend["customers"] = $customers;
+
+        }
         // dd($delivery_methods);
-        return inertia("Orders/Create", ["delivery_methods" => $delivery_methods]);
+        return inertia("Orders/Create", $toSend);
     }
 
     /**

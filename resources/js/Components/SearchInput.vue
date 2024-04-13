@@ -1,5 +1,9 @@
 <template>
-    <form class="max-w-md mx-auto">
+    <form
+        class="max-w-5xl mx-auto"
+        :class="class"
+        @submit.prevent="SearchCustomers"
+    >
         <label
             for="default-search"
             class="mb-2 text-sm font-medium sr-only text-white"
@@ -29,8 +33,9 @@
                 type="search"
                 id="default-search"
                 class="block w-full p-4 ps-10 text-sm border rounded-lg bg-slate-900 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search Mockups, Logos..."
+                :placeholder="'Busca ' + title || '...'"
                 required
+                v-model="q"
             />
             <button
                 type="submit"
@@ -39,9 +44,24 @@
                 Search
             </button>
         </div>
+        <slot />
     </form>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, watch } from "vue";
+import { router } from "@inertiajs/vue3";
+defineProps({ title: String, class: String });
+
+const q = ref();
+
+watch(q, () => {
+    router.get(
+        "/ventas/create",
+        { q: q.value },
+        { preserveState: true, preserveScroll: true }
+    );
+});
+</script>
 
 <style lang="scss" scoped></style>
