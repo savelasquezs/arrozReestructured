@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white relative border rounded-lg">
+    <div class="bg-slate-700 relative p-2 rounded-lg">
         <div class="flex items-center justify-between">
             <!-- SearchBar -->
 
@@ -44,8 +44,8 @@
                 </select>
             </div>
         </div>
-        <table class="w-full text-sm text-left text-grat-500">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        <table class="w-full text-sm text-left text-white/60">
+            <thead class="text-xs text-white uppercase bg-slate-800">
                 <tr>
                     <th class="px-4 py-3">Pedido #</th>
                     <th class="px-4 py-3">Productos</th>
@@ -68,41 +68,41 @@
                     :key="order.id"
                     class="border-b"
                 >
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.id }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ products(order.order_items) }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ currencyFormat(order.total) }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900"></td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80"></td>
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.delivery_method }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.delivery_person.name }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ currencyFormat(order.amount_to_collect) }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.customer.name }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.delivery_address }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.gift }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ order.description }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ new Date(order.created_at).toLocaleDateString() }}
                     </td>
-                    <td class="px-4 py-3 font-medium text-gray-900">
+                    <td class="px-4 py-3 font-medium text-white/80">
                         {{ new Date(order.created_at).toLocaleTimeString() }}
                     </td>
                     <td class="px-4 py-3 flex items-center justify-end">
