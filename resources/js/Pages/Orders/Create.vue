@@ -21,9 +21,11 @@ const props = defineProps({
     delivery_methods: Array,
     customer: Object,
     customers: Array,
+    neighborhoods: Array,
 });
 
 provide("delivery_methods", props.delivery_methods);
+provide("neighborhoods", props.neighborhoods);
 </script>
 
 <style lang="scss" scoped></style>

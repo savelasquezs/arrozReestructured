@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OrderResource;
 use App\Models\Customer;
 use App\Models\DeliveryMethod;
+use App\Models\Neighborhood;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -68,6 +69,9 @@ class OrderController extends Controller
 
             $toSend["customers"] = $customers;
         }
+        $neighborhoods = Neighborhood::all();
+        $toSend["neighborhoods"] = $neighborhoods;
+
         // dd($delivery_methods);
         return inertia("Orders/Create", $toSend);
     }

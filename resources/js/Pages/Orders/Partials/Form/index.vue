@@ -27,8 +27,24 @@
             <Dropdown
                 v-if="customerSelected"
                 :options="customerSelected.addresses"
-                v-model="customer.address"
-                title="Direcciónes del cliente"
+                title="Direccion de entrega"
+                v-model="addressSelected"
+            />
+            <TextInput
+                v-model="customer.delivery_address"
+                type="text"
+                title="Dirección de entrega"
+            />
+            <Dropdown
+                v-if="addressSelected"
+                :options="neighborhoods"
+                title="Barrios"
+                v-model="neighborhood_selected"
+            />
+            <TextInput
+                v-model="customer.shipping_value"
+                type="number"
+                title="Valor domi"
             />
         </div>
 
@@ -42,33 +58,54 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from "vue";
+import { ref, inject, computed, watch } from "vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
-defineProps({ customers: Array });
+const props = defineProps({ customers: Array });
 
 const customerSelected = ref();
+const addressSelected = ref();
+const neighborhood_selected = ref();
 
 const customer = useForm({
     name: null,
-    address: null,
+    delivery_address: null,
     remember: false,
+    neighborhood: null,
+    shipping_value: null,
 });
 
 function setCustomer(cust) {
     customerSelected.value = cust;
-    customer.address = null;
+    customer.delivery_address = null;
+    customer.name = cust.name;
 }
 
 const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
+const neighborhoods = inject("neighborhoods");
 
 function setDeliveryMethod(id) {
     delivery_method_selected.value = id;
     console.log(id);
 }
+
+watch(addressSelected, (value) => {
+    console.log(value);
+    const address = customerSelected.value.addresses.find(
+        (ad) => ad.address == value
+    );
+    customer.delivery_address = value;
+    const completeNeighboorhood = neighborhoods.find(
+        (n) => n.id == address.neighborhood_id
+    );
+    neighborhood_selected.value = completeNeighboorhood.name;
+    console.log(address);
+    customer.neighborhood = completeNeighboorhood.name;
+    customer.shipping_value = address.shipping_value;
+});
 </script>
 
 <style lang="scss" scoped></style>
