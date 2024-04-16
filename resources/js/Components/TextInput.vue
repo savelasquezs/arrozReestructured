@@ -24,7 +24,7 @@ defineExpose({ focus: () => input.value.focus() });
     <div class="my-2">
         <label
             for="number-input"
-            class="block text-sm font-medium text-gray-900 dark:text-white"
+            class="block text-sm font-medium text-white/60"
             >{{ title }}:</label
         >
         <input

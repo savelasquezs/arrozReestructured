@@ -8,16 +8,17 @@
             class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
         >
             <ul class="space-y-2 font-medium">
-                <ItemSidebar href="/ventas" name="Ventas">
-                    <template #icon>
-                        <BeakerIcon class="h-6 w-6 text-blue-500" />
-                    </template>
-                </ItemSidebar>
-                <ItemSidebar href="/gastos" name="Gastos">
-                    <template #icon>
-                        <BeakerIcon class="h-6 w-6 text-blue-500" />
-                    </template>
-                </ItemSidebar>
+                <ItemSidebar
+                    href="/ventas"
+                    name="Ventas"
+                    icon_name="ph:cash-register"
+                />
+
+                <ItemSidebar
+                    href="/gastos"
+                    name="Gastos"
+                    icon_name="mingcute:receive-money-fill"
+                />
             </ul>
         </div>
     </aside>
@@ -25,7 +26,6 @@
 
 <script setup>
 import ItemSidebar from "./ItemSidebar.vue";
-import { BeakerIcon } from "@heroicons/vue/24/solid";
 </script>
 
 <style lang="scss" scoped></style>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NeighborhoodRequest;
 use App\Models\Neighborhood;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class NeighborhoodController extends Controller
 {
@@ -18,17 +20,15 @@ class NeighborhoodController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(NeighborhoodRequest $request)
     {
-        //
+        Neighborhood::create($request->validated());
+        return redirect()->back();
     }
 
     /**

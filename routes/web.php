@@ -4,8 +4,10 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExpenseController;
 
+use App\Http\Controllers\NeighborhoodController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Models\Neighborhood;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,6 +17,7 @@ Route::resource("/bancos", EntityController::class);
 Route::resource("/clientes", CustomerController::class);
 Route::resource("/productos", ProductController::class);
 Route::resource("/ventas", OrderController::class);
+Route::resource("/barrios", NeighborhoodController::class)->only('store');
 
 Route::redirect("/", "/gastos");
 

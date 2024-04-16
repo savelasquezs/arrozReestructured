@@ -35,12 +35,25 @@
                 type="text"
                 title="Dirección de entrega"
             />
-            <Dropdown
-                v-if="addressSelected"
-                :options="neighborhoods"
-                title="Barrios"
-                v-model="neighborhood_selected"
-            />
+            <div class="flex gap-2">
+                <Dropdown
+                    v-if="addressSelected"
+                    :options="neighborhoods"
+                    title="Barrios"
+                    v-model="neighborhood_selected"
+                />
+                <button @click="displayNeiborhood = !displayNeiborhood">
+                    <Icon
+                        icon="lets-icons:add-duotone"
+                        width="30"
+                        color="#10b981"
+                    />
+                </button>
+                <NeighborhoodModal
+                    :displayNeiborhood="displayNeiborhood"
+                    @neighSaved="displayNeiborhood = false"
+                />
+            </div>
             <TextInput
                 v-model="customer.shipping_value"
                 type="number"
@@ -61,18 +74,21 @@
 import { ref, inject, computed, watch } from "vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, useRemember } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
+import { Icon } from "@iconify/vue";
+import NeighborhoodModal from "./NeighborhoodModal.vue";
+
 const props = defineProps({ customers: Array });
 
 const customerSelected = ref();
 const addressSelected = ref();
 const neighborhood_selected = ref();
+const displayNeiborhood = ref(false);
 
 const customer = useForm({
     name: null,
     delivery_address: null,
-    remember: false,
     neighborhood: null,
     shipping_value: null,
 });
