@@ -27,8 +27,9 @@ class NeighborhoodController extends Controller
      */
     public function store(NeighborhoodRequest $request)
     {
-        Neighborhood::create($request->validated());
-        return redirect()->back();
+        $neighborhood = Neighborhood::create($request->validated());
+
+        return back()->with('success', 'Barrio creado exitosamente');
     }
 
     /**

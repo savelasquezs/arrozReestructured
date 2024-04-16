@@ -35,25 +35,10 @@
                 type="text"
                 title="Dirección de entrega"
             />
-            <div class="flex gap-2">
-                <Dropdown
-                    v-if="addressSelected"
-                    :options="neighborhoods"
-                    title="Barrios"
-                    v-model="neighborhood_selected"
-                />
-                <button @click="displayNeiborhood = !displayNeiborhood">
-                    <Icon
-                        icon="lets-icons:add-duotone"
-                        width="30"
-                        color="#10b981"
-                    />
-                </button>
-                <NeighborhoodModal
-                    :displayNeiborhood="displayNeiborhood"
-                    @neighSaved="displayNeiborhood = false"
-                />
-            </div>
+            <NeighborhoodForm
+                v-model="neighborhood_selected"
+                :neighborhoods="neighborhoods"
+            />
             <TextInput
                 v-model="customer.shipping_value"
                 type="number"
@@ -76,15 +61,13 @@ import Dropdown from "@/Components/Dropdown.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm, useRemember } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
-import { Icon } from "@iconify/vue";
-import NeighborhoodModal from "./NeighborhoodModal.vue";
+import NeighborhoodForm from "@/Components/Neighborhood/NeighborhoodForm.vue";
 
-const props = defineProps({ customers: Array });
+const props = defineProps({ customers: Array, neighborhoods: Array });
 
 const customerSelected = ref();
 const addressSelected = ref();
 const neighborhood_selected = ref();
-const displayNeiborhood = ref(false);
 
 const customer = useForm({
     name: null,
@@ -101,12 +84,6 @@ function setCustomer(cust) {
 
 const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
-const neighborhoods = inject("neighborhoods");
-
-function setDeliveryMethod(id) {
-    delivery_method_selected.value = id;
-    console.log(id);
-}
 
 watch(addressSelected, (value) => {
     console.log(value);
@@ -114,7 +91,7 @@ watch(addressSelected, (value) => {
         (ad) => ad.address == value
     );
     customer.delivery_address = value;
-    const completeNeighboorhood = neighborhoods.find(
+    const completeNeighboorhood = props.neighborhoods.find(
         (n) => n.id == address.neighborhood_id
     );
     neighborhood_selected.value = completeNeighboorhood.name;

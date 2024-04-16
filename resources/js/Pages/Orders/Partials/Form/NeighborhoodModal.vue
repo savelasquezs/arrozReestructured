@@ -50,8 +50,8 @@ const form = useForm({
 function handleSubmit() {
     form.post("/barrios", {
         onSuccess: () => {
+            emit("neighSaved", form.name);
             form.reset();
-            emit("neighSaved");
         },
         onError: (errors) => {
             console.log(errors);
