@@ -3,6 +3,7 @@
         v-model="query"
         class="w-full relative"
         title="Busca cliente por tenefono, dirección o nombre "
+        @blur="customersShown = false"
     >
         <div
             v-if="customers && customersShown"
@@ -10,7 +11,7 @@
             class="z-10 divide-y divide-gray-100 rounded-lg shadow w-full bg-slate-900 absolute"
         >
             <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                class="py-2 text-sm text-gray-700 dark:text-gray-200 max-h-40 overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
                 aria-labelledby="dropdownDefaultButton"
             >
                 <li

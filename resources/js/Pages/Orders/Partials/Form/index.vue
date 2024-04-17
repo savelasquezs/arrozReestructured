@@ -1,7 +1,7 @@
 <template>
     <!-- delivery_method -->
 
-    <form class="max-w-5xl mx-auto" @submit.prevent="">
+    <form class="max-w-5xl mx-auto min-h-96" @submit.prevent="">
         <div class="mb-5">
             <Dropdown
                 :options="delivery_methods"
@@ -25,7 +25,7 @@
                     type="text"
                     title="Holis, ingresa un texto"
                 />
-                <div class="flex gap-2">
+                <div class="flex gap-2 items-center">
                     <Dropdown
                         v-if="customerSelected"
                         :options="customerSelected.addresses"
@@ -37,15 +37,17 @@
                         :customerId="customerSelected.id"
                         @addressSaved="handleAddressSaved"
                     />
+                    <div class="">
+                        <p class="p-0 my-0">Barrio:</p>
+                        {{ neighborhood_selected }}
+                    </div>
                 </div>
-                <NeighborhoodForm
-                    v-model="neighborhood_selected"
-                    :neighborhoods="neighborhoods"
-                />
+
                 <TextInput
                     v-model="customer.shipping_value"
                     type="number"
                     title="Valor domi"
+                    disabled
                 />
             </div>
         </div>
@@ -63,9 +65,8 @@
 import { ref, inject, computed, watch } from "vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { useForm, useRemember } from "@inertiajs/vue3";
+import { useForm } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
-import NeighborhoodForm from "@/Components/Neighborhood/NeighborhoodForm.vue";
 import AddressForm from "@/Components/Address/AddressForm.vue";
 
 const props = defineProps({ customers: Array, neighborhoods: Array });

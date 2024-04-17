@@ -36,6 +36,7 @@
                 :placeholder="'Busca ' + title || '...'"
                 required
                 v-model="q"
+                @blur="manageBlur"
             />
         </div>
         <slot />
@@ -43,12 +44,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useVModel } from "@vueuse/core";
 
 const props = defineProps({ title: String, class: String, modelValue: String });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "blur"]);
 const q = useVModel(props, "modelValue", emit);
+
+function manageBlur() {
+    setTimeout(() => {
+        emit("blur");
+    }, 200);
+}
 </script>
 
 <style lang="scss" scoped></style>

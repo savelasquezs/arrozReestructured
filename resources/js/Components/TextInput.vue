@@ -5,6 +5,7 @@ defineProps({
     modelValue: [String, Number],
     title: String,
     type: String,
+    disabled: Boolean,
 });
 
 defineEmits(["update:modelValue"]);
@@ -32,6 +33,7 @@ defineExpose({ focus: () => input.value.focus() });
             ref="input"
             :value="modelValue"
             :type="type"
+            :disabled="disabled"
             @input="$emit('update:modelValue', $event.target.value)"
         />
     </div>
