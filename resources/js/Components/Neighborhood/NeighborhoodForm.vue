@@ -10,6 +10,7 @@
         <NeighborhoodModal
             :displayNeiborhood="displayNeiborhood"
             @neighSaved="updateNeighborhood"
+            @close="displayNeiborhood = !displayNeiborhood"
         />
     </div>
 </template>

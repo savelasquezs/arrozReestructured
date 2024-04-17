@@ -10,7 +10,7 @@
             <div class="grid">
                 <div class="text-xs block text-gray-400">{{ title }}</div>
                 <div>
-                    {{ selectedOption || "Selecciona una" }}
+                    {{ selectedOption || "Selecciona ..." }}
                 </div>
             </div>
             <svg
@@ -34,7 +34,7 @@
         <div
             v-if="showDropDown"
             id="dropdown"
-            class="z-10 divide-y divide-gray-100 rounded-lg shadow w-44 bg-slate-900 absolute"
+            class="z-10 divide-y divide-gray-100 rounded-lg shadow w-55 bg-slate-900 absolute overflow-y-auto max-h-40 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
         >
             <ul
                 class="py-2 text-sm text-gray-700 dark:text-gray-200"

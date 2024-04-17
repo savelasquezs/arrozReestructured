@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExpenseController;
@@ -18,6 +19,7 @@ Route::resource("/clientes", CustomerController::class);
 Route::resource("/productos", ProductController::class);
 Route::resource("/ventas", OrderController::class);
 Route::resource("/barrios", NeighborhoodController::class)->only('store');
+Route::resource("/direcciones", AddressController::class)->only('store');
 
 Route::redirect("/", "/gastos");
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
 use App\Models\Address;
 use Illuminate\Http\Request;
 
@@ -26,9 +27,11 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddressRequest $request)
     {
-        //
+        Address::create($request->validated());
+
+        return back()->with('success', 'Dirección creada exitosamente');
     }
 
     /**

@@ -19,31 +19,35 @@
                     />
                 </div>
             </div>
-            <TextInput
-                v-model="customer.name"
-                type="text"
-                title="Holis, ingresa un texto"
-            />
-            <Dropdown
-                v-if="customerSelected"
-                :options="customerSelected.addresses"
-                title="Direccion de entrega"
-                v-model="addressSelected"
-            />
-            <TextInput
-                v-model="customer.delivery_address"
-                type="text"
-                title="Dirección de entrega"
-            />
-            <NeighborhoodForm
-                v-model="neighborhood_selected"
-                :neighborhoods="neighborhoods"
-            />
-            <TextInput
-                v-model="customer.shipping_value"
-                type="number"
-                title="Valor domi"
-            />
+            <div v-if="customerSelected">
+                <TextInput
+                    v-model="customer.name"
+                    type="text"
+                    title="Holis, ingresa un texto"
+                />
+                <div class="flex gap-2">
+                    <Dropdown
+                        v-if="customerSelected"
+                        :options="customerSelected.addresses"
+                        title="Direccion de entrega"
+                        v-model="addressSelected"
+                    />
+                    <AddressForm
+                        :neighborhoods="neighborhoods"
+                        :customerId="customerSelected.id"
+                        @addressSaved="handleAddressSaved"
+                    />
+                </div>
+                <NeighborhoodForm
+                    v-model="neighborhood_selected"
+                    :neighborhoods="neighborhoods"
+                />
+                <TextInput
+                    v-model="customer.shipping_value"
+                    type="number"
+                    title="Valor domi"
+                />
+            </div>
         </div>
 
         <button
@@ -62,6 +66,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { useForm, useRemember } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
 import NeighborhoodForm from "@/Components/Neighborhood/NeighborhoodForm.vue";
+import AddressForm from "@/Components/Address/AddressForm.vue";
 
 const props = defineProps({ customers: Array, neighborhoods: Array });
 
@@ -82,6 +87,13 @@ function setCustomer(cust) {
     customer.name = cust.name;
 }
 
+function handleAddressSaved(address) {
+    addressSelected.value = address;
+    customerSelected.value = props.customers.find(
+        (customer) => (customer.id = customerSelected.value.id)
+    );
+}
+
 const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
 
@@ -90,6 +102,7 @@ watch(addressSelected, (value) => {
     const address = customerSelected.value.addresses.find(
         (ad) => ad.address == value
     );
+    console.log(address);
     customer.delivery_address = value;
     const completeNeighboorhood = props.neighborhoods.find(
         (n) => n.id == address.neighborhood_id

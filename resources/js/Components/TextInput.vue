@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 
 defineProps({
-    modelValue: String || Number,
+    modelValue: [String, Number],
     title: String,
     type: String,
 });

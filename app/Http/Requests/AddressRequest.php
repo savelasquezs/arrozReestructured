@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NeighborhoodRequest extends FormRequest
+class AddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,12 @@ class NeighborhoodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|min:3|unique:neighborhoods,name",
+            "address" => "required|min:10",
             "shipping_value" => "required | min:0| integer| multiple_of:1000| max_digits:5",
+            "customer_id" => "required",
+            "neighborhood_id" => "required",
         ];
     }
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'name' => ucfirst(strtolower($this->name)),
-        ]);
-    }
+
+
 }
