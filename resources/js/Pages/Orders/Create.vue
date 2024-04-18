@@ -5,10 +5,14 @@
                 <div
                     class="text-white/60 bg-gray-700 overflow-hidden shadow-xl sm:rounded-lg"
                 >
-                    <OrderForm
-                        :customers="customers"
-                        :neighborhoods="neighborhoods"
-                    ></OrderForm>
+                    <SidebarBase right>
+                        <OrderForm
+                            class="min-w-96 p-3 bg-slate-700"
+                            :customers="customers"
+                            :neighborhoods="neighborhoods"
+                        ></OrderForm>
+                    </SidebarBase>
+                    <Tab />
                 </div>
             </div>
         </div>
@@ -18,6 +22,8 @@
 <script setup>
 import OrderForm from "./Partials/Form/index.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import SidebarBase from "@/Layouts/Partials/Sidebar/SidebarBase.vue";
+import Tab from "@/Components/Tab.vue";
 import { watch, ref } from "vue";
 import { provide } from "vue";
 

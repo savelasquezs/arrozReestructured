@@ -53,7 +53,7 @@ const q = useVModel(props, "modelValue", emit);
 function manageBlur() {
     setTimeout(() => {
         emit("blur");
-    }, 200);
+    }, 500);
 }
 </script>
 

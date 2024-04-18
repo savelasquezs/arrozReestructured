@@ -1,9 +1,27 @@
 <template>
     <!-- delivery_method -->
 
-    <form class="max-w-5xl mx-auto min-h-96" @submit.prevent="">
+    <form class="min-w-2xl mx-auto min-h-96 relative" @submit.prevent="">
+        <div class="absolute right-1 top-1 text-xs">
+            {{ delivery_method_selected }}
+        </div>
         <div class="mb-5">
+            <button
+                class="text-xs bg-slate-900 rounded-md text-white/60 hover:text-white p-2 m-1"
+                v-if="delivery_method_selected"
+                @click="changeDeliverymethod"
+            >
+                Cambiar tipo Entrega
+            </button>
+            <button
+                @click="searchingCustomer = true"
+                v-if="!searchingCustomer"
+                class="text-xs bg-slate-900 rounded-md text-white/60 p-2 m-1 hover:text-white"
+            >
+                Cambiar Cliente
+            </button>
             <Dropdown
+                v-if="!delivery_method_selected"
                 :options="delivery_methods"
                 title="Metodo de entrega"
                 v-model="delivery_method_selected"
@@ -14,17 +32,29 @@
             <div v-if="delivery_method_selected == 'Delivery'">
                 <div class="flex justify-start items-center">
                     <SearchCustomersInput
+                        v-if="searchingCustomer"
                         :customers="customers"
                         @customerSelected="setCustomer"
                     />
                 </div>
             </div>
-            <div v-if="customerSelected">
+
+            <div class="flex gap-2 items-center justify-between">
+                <TextInput v-model="customer.name" type="text" title="Nombre" />
+
+                <div class="text-xs" v-if="addressSelected">
+                    <p>Barrio:</p>
+                    <p class="text-white">{{ neighborhood_selected }}</p>
+                </div>
                 <TextInput
-                    v-model="customer.name"
-                    type="text"
-                    title="Holis, ingresa un texto"
+                    v-if="addressSelected"
+                    v-model="customer.shipping_value"
+                    type="number"
+                    title="Valor domi"
+                    disabled
                 />
+            </div>
+            <div v-if="customerSelected">
                 <div class="flex gap-2 items-center">
                     <Dropdown
                         v-if="customerSelected"
@@ -37,18 +67,7 @@
                         :customerId="customerSelected.id"
                         @addressSaved="handleAddressSaved"
                     />
-                    <div class="">
-                        <p class="p-0 my-0">Barrio:</p>
-                        {{ neighborhood_selected }}
-                    </div>
                 </div>
-
-                <TextInput
-                    v-model="customer.shipping_value"
-                    type="number"
-                    title="Valor domi"
-                    disabled
-                />
             </div>
         </div>
 
@@ -69,6 +88,7 @@ import { useForm } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
 import AddressForm from "@/Components/Address/AddressForm.vue";
 
+const searchingCustomer = ref(true);
 const props = defineProps({ customers: Array, neighborhoods: Array });
 
 const customerSelected = ref();
@@ -84,6 +104,7 @@ const customer = useForm({
 
 function setCustomer(cust) {
     customerSelected.value = cust;
+    searchingCustomer.value = false;
     customer.delivery_address = null;
     customer.name = cust.name;
 }
@@ -99,20 +120,34 @@ const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
 
 watch(addressSelected, (value) => {
-    console.log(value);
-    const address = customerSelected.value.addresses.find(
-        (ad) => ad.address == value
-    );
-    console.log(address);
-    customer.delivery_address = value;
-    const completeNeighboorhood = props.neighborhoods.find(
-        (n) => n.id == address.neighborhood_id
-    );
-    neighborhood_selected.value = completeNeighboorhood.name;
-    console.log(address);
-    customer.neighborhood = completeNeighboorhood.name;
-    customer.shipping_value = address.shipping_value;
+    if (addressSelected.value) {
+        console.log(value);
+        const address = customerSelected.value.addresses.find(
+            (ad) => ad.address == value
+        );
+        console.log(address);
+        customer.delivery_address = value;
+        const completeNeighboorhood = props.neighborhoods.find(
+            (n) => n.id == address.neighborhood_id
+        );
+        neighborhood_selected.value = completeNeighboorhood.name;
+        console.log(address);
+        customer.neighborhood = completeNeighboorhood.name;
+        customer.shipping_value = address.shipping_value;
+    }
 });
+
+function changeDeliverymethod() {
+    if (delivery_method_selected.value == "Delivery") {
+        delivery_method_selected.value = "ToTake";
+
+        customerSelected.value = null;
+        addressSelected.value = null;
+        neighborhood_selected.value = null;
+    } else {
+        delivery_method_selected.value = "Delivery";
+    }
+}
 </script>
 
 <style lang="scss" scoped></style>

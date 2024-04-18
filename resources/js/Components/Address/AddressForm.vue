@@ -20,8 +20,10 @@ const displayAddress = ref(false);
 const emit = defineEmits(["addressSaved"]);
 
 function handleAddress(address) {
-    displayAddress.value = false;
     emit("addressSaved", address);
+    setTimeout(() => {
+        displayAddress.value = false;
+    }, 200);
 }
 </script>
 

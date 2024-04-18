@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { Head, Link, router } from "@inertiajs/vue3";
 import Banner from "@/Components/Banner.vue";
-import SideBar from "../Layouts/Partials/Sidebar/index.vue";
+import SidebarPages from "./Partials/Sidebar/SidebarPages.vue";
 
 defineProps({
     title: String,
@@ -34,10 +34,10 @@ const logout = () => {
         <Banner />
 
         <div class="min-h-screen bg-slate-100 dark:bg-slate-900">
-            <SideBar />
+            <SidebarPages />
 
             <!-- Page Content -->
-            <main class="ml-64">
+            <main>
                 <slot />
             </main>
         </div>
