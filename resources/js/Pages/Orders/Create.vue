@@ -5,14 +5,17 @@
                 <div
                     class="text-white/60 bg-gray-700 overflow-hidden shadow-xl sm:rounded-lg"
                 >
+                    <PrimaryButton @click="ordersCount += 1">
+                        <SmallAddButton />
+                        Hacer pedido</PrimaryButton
+                    >
                     <SidebarBase right>
-                        <OrderForm
-                            class="min-w-96 p-3 bg-slate-700"
+                        <Tab
+                            :ordersCount="ordersCount"
                             :customers="customers"
                             :neighborhoods="neighborhoods"
-                        ></OrderForm>
+                        />
                     </SidebarBase>
-                    <Tab />
                 </div>
             </div>
         </div>
@@ -20,12 +23,16 @@
 </template>
 
 <script setup>
-import OrderForm from "./Partials/Form/index.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import SidebarBase from "@/Layouts/Partials/Sidebar/SidebarBase.vue";
 import Tab from "@/Components/Tab.vue";
+import SidebarBase from "@/Layouts/Partials/Sidebar/SidebarBase.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+
 import { watch, ref } from "vue";
 import { provide } from "vue";
+import SmallAddButton from "@/Components/SmallAddButton.vue";
+
+const ordersCount = ref(0);
 
 const props = defineProps({
     delivery_methods: Array,

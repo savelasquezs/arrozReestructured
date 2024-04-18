@@ -1,36 +1,48 @@
 <template>
+    <div class="min-w-96 p-3 bg-slate-700">
+        <div class="flex gap-2 mb-5">
+            <div v-for="orderId in ordersCount">
+                <input
+                    :id="'order_' + orderId"
+                    type="radio"
+                    :value="orderId"
+                    v-model="currentOrder"
+                    class="hidden"
+                />
+                <label
+                    :for="'order_' + orderId"
+                    class="bg-slate-800 p-2 text-white/60 rounded-t-md"
+                    >Facturero {{ orderId }}</label
+                >
+            </div>
+        </div>
+        <OrderForm
+            v-for="orderId in ordersCount"
+            :class="currentOrder == orderId ? '' : 'hidden'"
+            :customers="customers"
+            :neighborhoods="neighborhoods"
+        ></OrderForm>
+    </div>
     <!--Tabs navigation-->
-    <div class="flex items-center mb-4">
-        <input
-            id="default-radio-1"
-            type="radio"
-            value=""
-            name="default-radio"
-            class="hidden"
-        />
-        <label for="default-radio-1" class="tab">Default tab</label>
-    </div>
-    <div class="flex items-center">
-        <input
-            checked
-            id="default-radio-2"
-            type="radio"
-            value=""
-            name="default-radio"
-            class="hidden"
-        />
-        <label for="default-radio-2" class="tab">Checked tab</label>
-    </div>
 
     <!--Tabs content-->
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import OrderForm from "@/Pages/Orders/Partials/Form/index.vue";
+const currentOrder = ref();
+const props = defineProps({
+    customers: Array,
+    neighborhoods: Array,
+    ordersCount: Number,
+});
+</script>
 
 <style scoped>
 input[type="radio"]:checked + label {
-    border-color: #2563eb;
+    border-bottom: 1px solid #2563eb;
     font-weight: bold;
-    color: #2563eb; /* Cambia el color del texto cuando está seleccionado */
+    color: white; /* Cambia el color del texto cuando está seleccionado */
 }
 </style>

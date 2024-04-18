@@ -36,6 +36,7 @@
                         :customers="customers"
                         @customerSelected="setCustomer"
                     />
+                    <CustomerForm :neighborhoods="neighborhoods" />
                 </div>
             </div>
 
@@ -87,6 +88,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
 import SearchCustomersInput from "./SearchCustomerInput.vue";
 import AddressForm from "@/Components/Address/AddressForm.vue";
+import CustomerForm from "@/Components/Customer/CustomerForm.vue";
 
 const searchingCustomer = ref(true);
 const props = defineProps({ customers: Array, neighborhoods: Array });
