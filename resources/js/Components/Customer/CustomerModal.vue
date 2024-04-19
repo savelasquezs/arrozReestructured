@@ -58,14 +58,16 @@ import DialogModal from "@/Components/DialogModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import NeighborhoodForm from "@/Components/Neighborhood/NeighborhoodForm.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
+const page = usePage();
 
 const props = defineProps({
     displayCustomer: Boolean,
     neighborhoods: Array,
 });
 
-const customerId = ref(2);
+const customerId = computed(() => page.props.flash.CustomerId);
 const neighborhood_selected = ref();
 
 const emit = defineEmits(["customerSaved", "close"]);
@@ -82,10 +84,17 @@ function handleAddressSaved() {}
 
 function handleSubmit() {
     form.post("/clientes", {
-        onSuccess: (algo) => {
-            console.log(algo);
-            emit("customerSaved", form.name);
-            form.reset();
+        onSuccess: () => {
+            form.customer_id = customerId.value;
+            form.post("/direcciones", {
+                onSuccess: () => {
+                    emit("customerSaved", form.name);
+                    form.reset();
+                },
+                onError: (errors) => {
+                    console.log(errors);
+                },
+            });
         },
         onError: (errors) => {
             console.log(errors);

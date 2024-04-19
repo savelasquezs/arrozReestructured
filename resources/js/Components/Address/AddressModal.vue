@@ -89,10 +89,13 @@ function handleClose() {
 
 watch(neighborhood_selected, () => {
     if (neighborhood_selected.value) {
+        console.log(neighborhood_selected.value);
         const neighborhood = props.neighborhoods.find(
-            (n) => n.name == neighborhood_selected.value
+            (n) =>
+                n.name.toLowerCase() ==
+                neighborhood_selected.value.toLowerCase()
         );
-        console.log(neighborhood);
+        console.log(props.neighborhoods);
         form.neighborhood_id = neighborhood.id;
         form.shipping_value = neighborhood.shipping_value;
     }

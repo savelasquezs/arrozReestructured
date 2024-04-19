@@ -21,6 +21,7 @@ Route::resource("/ventas", OrderController::class);
 Route::resource("/barrios", NeighborhoodController::class)->only('store');
 Route::resource("/direcciones", AddressController::class)->only('store');
 
+
 Route::redirect("/", "/gastos");
 
 Route::get('/dashboard', function () {

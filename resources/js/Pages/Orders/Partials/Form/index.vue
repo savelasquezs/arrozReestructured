@@ -36,7 +36,10 @@
                         :customers="customers"
                         @customerSelected="setCustomer"
                     />
-                    <CustomerForm :neighborhoods="neighborhoods" />
+                    <CustomerForm
+                        :neighborhoods="neighborhoods"
+                        @customerSaved="handleCustomer"
+                    />
                 </div>
             </div>
 
@@ -78,6 +81,7 @@
         >
             Submit
         </button>
+        {{ customers.length }}
     </form>
 </template>
 
@@ -118,22 +122,33 @@ function handleAddressSaved(address) {
     );
 }
 
+function handleCustomer(customerName) {
+    setTimeout(() => {
+        const customerToFind = props.customers.find(
+            (customer) =>
+                customer.name.toLowerCase() == customerName.toLowerCase()
+        );
+        console.log(customerToFind);
+        setCustomer(customerToFind);
+        addressSelected.value = customerToFind.addresses[0].address;
+    }, 1000);
+}
+
 const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
 
 watch(addressSelected, (value) => {
     if (addressSelected.value) {
-        console.log(value);
         const address = customerSelected.value.addresses.find(
             (ad) => ad.address == value
         );
-        console.log(address);
+
         customer.delivery_address = value;
         const completeNeighboorhood = props.neighborhoods.find(
             (n) => n.id == address.neighborhood_id
         );
         neighborhood_selected.value = completeNeighboorhood.name;
-        console.log(address);
+
         customer.neighborhood = completeNeighboorhood.name;
         customer.shipping_value = address.shipping_value;
     }
