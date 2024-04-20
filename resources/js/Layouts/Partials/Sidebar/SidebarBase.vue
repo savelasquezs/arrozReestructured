@@ -50,7 +50,7 @@
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
 
-defineProps({ right: Boolean });
+const props = defineProps({ right: Boolean, show: Boolean });
 const dimmer = ref();
 
 const open = ref(false);
@@ -58,6 +58,10 @@ const open = ref(false);
 const toggle = () => {
     open.value = !open.value;
 };
+
+if (props.show) {
+    open.value = true;
+}
 </script>
 
 <style lang="scss" scoped></style>

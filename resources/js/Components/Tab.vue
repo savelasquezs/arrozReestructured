@@ -29,9 +29,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import OrderForm from "@/Pages/Orders/Partials/Form/index.vue";
-const currentOrder = ref();
+
+const currentOrder = ref(1);
+
 const props = defineProps({
     customers: Array,
     neighborhoods: Array,

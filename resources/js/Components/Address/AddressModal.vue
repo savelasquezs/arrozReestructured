@@ -3,6 +3,8 @@
         <template #title> Dirección</template>
 
         <template #content>
+            {{ editing }}
+            {{ addressToEdit }}
             <form @submit.prevent="handleSubmit">
                 <div v-if="form.errors.address" class="text-red-500">
                     {{ form.errors.address }}
@@ -50,18 +52,19 @@ import DialogModal from "@/Components/DialogModal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import NeighborhoodForm from "../Neighborhood/NeighborhoodForm.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 
 const props = defineProps({
     displayAddress: Boolean,
     customerId: Number,
     neighborhoods: Array,
+    editing: Boolean,
+    addressToEdit: String,
 });
 
+const idAddressSelected = ref();
 const neighborhood_selected = ref();
-
-const emit = defineEmits(["addressSaved", "close"]);
-
+const emit = defineEmits(["addressSaved", "close", "addressEdited"]);
 const form = useForm({
     customer_id: props.customerId,
     neighborhood_id: null,
@@ -69,16 +72,50 @@ const form = useForm({
     shipping_value: null,
 });
 
+const editinLocal = computed(() => props.editing);
+
+watch(editinLocal, (value) => {
+    if (value) {
+        const toReplace = props.addressToEdit.split("/");
+
+        form.address = toReplace[0];
+        neighborhood_selected.value = toReplace[1];
+        setTimeout(() => {
+            form.shipping_value = toReplace[2];
+        }, 200);
+        idAddressSelected.value = toReplace[3];
+    }
+});
+
 function handleSubmit() {
-    form.post("/direcciones", {
-        onSuccess: () => {
-            emit("addressSaved", form.address);
-            form.reset();
-        },
-        onError: (errors) => {
-            console.log(errors);
-        },
-    });
+    const { address, customer_id, neighborhood_id, shipping_value } = form;
+    const formToSubmit = {
+        address,
+        customer_id,
+        neighborhood_id,
+        shipping_value,
+    };
+    const onSuccess = () => {
+        emit(
+            editinLocal.value ? "addressEdited" : "addressSaved",
+            editinLocal.value ? formToSubmit : form.address
+        );
+        console.log(editinLocal.value ? "editado" : "guardado");
+        form.reset();
+    };
+
+    const onError = (errors) => {
+        console.log(errors);
+    };
+
+    if (editinLocal.value) {
+        form.put(`/direcciones/${idAddressSelected.value}`, {
+            onSuccess,
+            onError,
+        });
+    } else {
+        form.post("/direcciones", { onSuccess, onError });
+    }
 }
 
 function handleClose() {

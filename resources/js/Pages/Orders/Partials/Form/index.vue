@@ -70,6 +70,8 @@
                         :neighborhoods="neighborhoods"
                         :customerId="customerSelected.id"
                         @addressSaved="handleAddressSaved"
+                        :addressToEdit="adddressWithNeigh"
+                        @addressEdited="replaceAddressFromForm"
                     />
                 </div>
             </div>
@@ -81,7 +83,6 @@
         >
             Submit
         </button>
-        {{ customers.length }}
     </form>
 </template>
 
@@ -100,6 +101,12 @@ const props = defineProps({ customers: Array, neighborhoods: Array });
 const customerSelected = ref();
 const addressSelected = ref();
 const neighborhood_selected = ref();
+const idAddressSelected = ref();
+
+const adddressWithNeigh = computed(
+    () =>
+        `${addressSelected.value}/${neighborhood_selected.value}/${customer.shipping_value}/${idAddressSelected.value}`
+);
 
 const customer = useForm({
     name: null,
@@ -113,6 +120,7 @@ function setCustomer(cust) {
     searchingCustomer.value = false;
     customer.delivery_address = null;
     customer.name = cust.name;
+    addressSelected.value = cust.addresses[0].address;
 }
 
 function handleAddressSaved(address) {
@@ -137,20 +145,48 @@ function handleCustomer(customerName) {
 const delivery_method_selected = ref();
 const delivery_methods = inject("delivery_methods");
 
+function replaceValues(value) {
+    console.log(customerSelected.value.addresses);
+    const address = customerSelected.value.addresses.find(
+        (ad) => ad.address == value
+    );
+    console.log(address);
+    idAddressSelected.value = address.id;
+
+    customer.delivery_address = value;
+    const completeNeighboorhood = props.neighborhoods.find(
+        (n) => n.id == address.neighborhood_id
+    );
+    neighborhood_selected.value = completeNeighboorhood.name;
+    console.log(neighborhood_selected.value);
+
+    customer.neighborhood = completeNeighboorhood.name;
+    customer.shipping_value = address.shipping_value;
+}
+
+function replaceAddressFromForm(form) {
+    console.log(form);
+    const address = customerSelected.value.addresses.find(
+        (ad) => ad.address == addressSelected.value
+    );
+
+    addressSelected.value = address.address = form.address;
+    setTimeout(() => {
+        const neighborhoodName = props.neighborhoods.find(
+            (n) => n.id == form.neighborhood_id
+        ).name;
+
+        neighborhood_selected.value = neighborhoodName;
+        setTimeout(() => {
+            customer.shipping_value = form.shipping_value;
+        }, 200);
+    }, 200);
+    idAddressSelected.value = address.id;
+}
+
 watch(addressSelected, (value) => {
     if (addressSelected.value) {
-        const address = customerSelected.value.addresses.find(
-            (ad) => ad.address == value
-        );
-
-        customer.delivery_address = value;
-        const completeNeighboorhood = props.neighborhoods.find(
-            (n) => n.id == address.neighborhood_id
-        );
-        neighborhood_selected.value = completeNeighboorhood.name;
-
-        customer.neighborhood = completeNeighboorhood.name;
-        customer.shipping_value = address.shipping_value;
+        replaceValues(value);
     }
 });
 

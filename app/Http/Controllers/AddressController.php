@@ -53,9 +53,13 @@ class AddressController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Address $address)
+    public function update(AddressRequest $request, $id)
     {
-        //
+        // $address->update($request->validated());
+        $address = Address::find($id);
+        // dd($address);
+        $address->update($request->validated());
+        return back()->with('success', 'Dirección creada exitosamente');
     }
 
     /**

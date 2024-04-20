@@ -4,6 +4,7 @@
         <div class="relative w-full">
             <input
                 type="text"
+                name="search"
                 placeholder="Search..."
                 class="bg-gray-50 border border-gray-300 text-gray-900"
                 v-model="q"

@@ -1,11 +1,19 @@
 <template>
     <SmallAddButton @clicked="displayAddress = !displayAddress" />
+    <SmallAddButton
+        @clicked="handleEditingOpen"
+        editing
+        v-if="addressToEdit.split('/')[0] != 'undefined'"
+    />
     <AddressModal
         :displayAddress="displayAddress"
         :customerId="customerId"
         :neighborhoods="neighborhoods"
-        @close="displayAddress = false"
+        @close="handleClose"
         @addressSaved="handleAddress"
+        @addressEdited="handleEditing"
+        :editing="editing"
+        :addressToEdit="addressToEdit"
     />
 </template>
 
@@ -14,16 +22,37 @@ import { ref } from "vue";
 import AddressModal from "./AddressModal.vue";
 import SmallAddButton from "@/Components/SmallAddButton.vue";
 
-const props = defineProps({ customerId: Number, neighborhoods: Array });
+const editing = ref(false);
+
+const props = defineProps({
+    customerId: Number,
+    neighborhoods: Array,
+    addressToEdit: String,
+});
 const displayAddress = ref(false);
 
-const emit = defineEmits(["addressSaved"]);
+const emit = defineEmits(["addressSaved", "addressEdited"]);
+
+function handleEditingOpen() {
+    displayAddress.value = true;
+    editing.value = true;
+}
+
+function handleEditing(form) {
+    emit("addressEdited", form);
+    displayAddress.value = false;
+    editing.value = false;
+}
+
+function handleClose() {
+    displayAddress.value = false;
+    editing.value = false;
+}
 
 function handleAddress(address) {
     emit("addressSaved", address);
-    setTimeout(() => {
-        displayAddress.value = false;
-    }, 200);
+
+    displayAddress.value = false;
 }
 </script>
 

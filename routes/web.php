@@ -18,8 +18,8 @@ Route::resource("/bancos", EntityController::class);
 Route::resource("/clientes", CustomerController::class);
 Route::resource("/productos", ProductController::class);
 Route::resource("/ventas", OrderController::class);
-Route::resource("/barrios", NeighborhoodController::class)->only('store');
-Route::resource("/direcciones", AddressController::class)->only('store');
+Route::resource("/barrios", NeighborhoodController::class)->only(['store', 'update']);
+Route::resource("/direcciones", AddressController::class)->only(['store', 'update']);
 
 
 Route::redirect("/", "/gastos");

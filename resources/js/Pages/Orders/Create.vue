@@ -9,7 +9,7 @@
                         <SmallAddButton />
                         Hacer pedido</PrimaryButton
                     >
-                    <SidebarBase right>
+                    <SidebarBase right show v-if="ordersCount > 0">
                         <Tab
                             :ordersCount="ordersCount"
                             :customers="customers"
